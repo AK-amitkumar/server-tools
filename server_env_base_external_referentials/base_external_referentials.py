@@ -19,13 +19,13 @@
 #
 ##############################################################################
 
-from osv import fields, osv
+from osv import fields, models
 from server_environment import serv_config
 import logging
 
 
 
-class external_referential(osv.osv):
+class external_referential(models.Model):
     _inherit = 'external.referential'
 
     def _get_environment_config_by_name(self, cr, uid, ids, field_names, arg, context):
@@ -42,13 +42,13 @@ class external_referential(osv.osv):
                     logger.exception('error trying to read field %s in section %s', field_name, section_name)
         return values
 
-    _columns = {
-        'location': fields.function(_get_environment_config_by_name, type='char', size=200,
+
+    location = fields.Char(compute="_get_environment_config_by_name", size=200
                     method=True, string='Location', multi='connection_config'),
-        'apiusername': fields.function(_get_environment_config_by_name, type='char', size=64,
+    apiusername = fields.Char(compute="_get_environment_config_by_name", size=64
                        method=True, string='User Name', multi='connection_config'),
-        'apipass': fields.function(_get_environment_config_by_name, type='char', size=64,
+    apipass = fields.Char(compute="_get_environment_config_by_name", size=64
                    method=True, string='Password', multi='connection_config'),
-    }
+
 
 external_referential()

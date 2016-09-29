@@ -19,7 +19,7 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
+from openerp import fields
 
 from openerp.addons.server_environment import serv_config
 
@@ -51,15 +51,15 @@ class IrMail(orm.Model):
             res[mail_server.id] = config_vals
         return res
 
-    _columns = {
-        'smtp_host': fields.function(
+
+        'smtp_host': fields.Function(
             _get_smtp_conf,
             string='SMTP Server',
             type="char",
             multi='outgoing_mail_config',
             states={'draft': [('readonly', True)]},
             help="Hostname or IP of SMTP server"),
-        'smtp_port': fields.function(
+        'smtp_port': fields.Function(
             _get_smtp_conf,
             string='SMTP Port',
             type="integer",
@@ -68,7 +68,7 @@ class IrMail(orm.Model):
             help="SMTP Port. Usually 465 for SSL, "
                  "and 25 or 587 for other cases.",
             size=5),
-        'smtp_user': fields.function(
+        'smtp_user': fields.Function(
             _get_smtp_conf,
             string='Username',
             type="char",
@@ -76,7 +76,7 @@ class IrMail(orm.Model):
             states={'draft': [('readonly', True)]},
             help="Optional username for SMTP authentication",
             size=64),
-        'smtp_pass': fields.function(
+        'smtp_pass': fields.Function(
             _get_smtp_conf,
             string='Password',
             type="char",
@@ -84,7 +84,7 @@ class IrMail(orm.Model):
             states={'draft': [('readonly', True)]},
             help="Optional password for SMTP authentication",
             size=64),
-        'smtp_encryption': fields.function(
+        'smtp_encryption': fields.Function(
             _get_smtp_conf,
             string='smtp_encryption',
             type="selection",
@@ -99,7 +99,7 @@ class IrMail(orm.Model):
                  "of SMTP session (Recommended)\n"
                  "- ssl: SMTP sessions are encrypted with SSL/TLS "
                  "through a dedicated port (default: 465)")
-    }
+
 
 
 class FetchmailServer(orm.Model):
@@ -165,21 +165,21 @@ class FetchmailServer(orm.Model):
             i += 1
         return [('id', 'in', result_ids)]
 
-    _columns = {
-        'server': fields.function(
+
+        'server': fields.Function(
             _get_incom_conf,
             string='Server',
             type="char",
             multi='income_mail_config',
             states={'draft': [('readonly', True)]},
             help="Hostname or IP of the mail server"),
-        'port': fields.function(
+        'port': fields.Function(
             _get_incom_conf,
             string='Port',
             type="integer",
             states={'draft': [('readonly', True)]},
             multi='income_mail_config'),
-        'type': fields.function(
+        'type': fields.Function(
             _get_incom_conf,
             string='Type',
             type="selection",
@@ -191,7 +191,7 @@ class FetchmailServer(orm.Model):
             fnct_search=_type_search,
             states={'draft': [('readonly', True)]},
             help="pop, imap, local"),
-        'is_ssl': fields.function(
+        'is_ssl': fields.Function(
             _get_incom_conf,
             string='Is SSL',
             type="boolean",
@@ -199,7 +199,7 @@ class FetchmailServer(orm.Model):
             states={'draft': [('readonly', True)]},
             help='Connections are encrypted with SSL/TLS through'
                  ' a dedicated port (default: IMAPS=993, POP3S=995)'),
-        'attach': fields.function(
+        'attach': fields.Function(
             _get_incom_conf,
             string='Keep Attachments',
             type="boolean",
@@ -208,7 +208,7 @@ class FetchmailServer(orm.Model):
             help="Whether attachments should be downloaded. "
                  "If not enabled, incoming emails will be stripped of any "
                  "attachments before being processed"),
-        'original': fields.function(
+        'original': fields.Function(
             _get_incom_conf,
             string='Keep Original',
             type="boolean",
@@ -217,16 +217,16 @@ class FetchmailServer(orm.Model):
             help="Whether a full original copy of each email should be kept "
                  "for reference and attached to each processed message. This "
                  "will usually double the size of your message database."),
-        'user': fields.function(
+        'user': fields.Function(
             _get_incom_conf,
             string='Username',
             type="char",
             states={'draft': [('readonly', True)]},
             multi='income_mail_config'),
-        'password': fields.function(
+        'password': fields.Function(
             _get_incom_conf,
             string='password',
             type="char",
             states={'draft': [('readonly', True)]},
             multi='income_mail_config')
-    }
+

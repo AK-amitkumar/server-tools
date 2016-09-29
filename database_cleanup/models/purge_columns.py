@@ -66,7 +66,7 @@ class CleanupPurgeWizardColumn(models.TransientModel):
     @api.model
     def get_orphaned_columns(self, model_pools):
         """
-        From openobject-server/openerp/osv/orm.py
+        From openobject-server/openerp/orm.py
         Iterate on the database columns to identify columns
         of fields which have been removed
         """
@@ -75,7 +75,7 @@ class CleanupPurgeWizardColumn(models.TransientModel):
             for model_pool in model_pools
             for column in model_pool._columns
             if not (isinstance(model_pool._columns[column],
-                               fields.fields.function) and
+                               fields.Fields.function) and
                     not model_pool._columns[column].store)
         ]))
         columns += models.MAGIC_COLUMNS

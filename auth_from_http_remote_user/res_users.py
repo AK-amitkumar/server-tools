@@ -20,7 +20,7 @@
 ##############################################################################
 
 from openerp.modules.registry import RegistryManager
-from openerp.osv import orm, fields
+from openerp import fields
 from openerp import SUPERUSER_ID
 import openerp.exceptions
 from openerp.addons.auth_from_http_remote_user import utils
@@ -29,10 +29,10 @@ from openerp.addons.auth_from_http_remote_user import utils
 class res_users(orm.Model):
     _inherit = 'res.users'
 
-    _columns = {
-        'sso_key': fields.char('SSO Key', size=utils.KEY_LENGTH,
+
+    sso_key = fields.Char('SSO Key', size=utils.KEY_LENGTH
                                readonly=True),
-    }
+
 
     def copy(self, cr, uid, rid, defaults=None, context=None):
         defaults = defaults or {}

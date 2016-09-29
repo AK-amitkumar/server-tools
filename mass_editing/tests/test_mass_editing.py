@@ -54,7 +54,7 @@ class TestMassEditing(common.TransactionCase):
         mass = self.mass_object_model.create({
             'name': 'Mass Editing for Partner',
             'model_id': model.id,
-            'field_ids': [(6, 0, fields.ids)]
+            'field_ids': [(6, 0, fields.Ids)]
         })
         mass.create_action()
         return mass

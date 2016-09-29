@@ -18,8 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv.orm import Model
-from openerp.osv import fields
+from openerp.models.orm import Model
+from openerp import fields
 from openerp.addons.email_template.email_template import mako_template_env
 
 
@@ -35,12 +35,12 @@ class email_template(Model):
                 where id in %s''', (tuple(ids),))
         return dict(cr.fetchall())
 
-    _columns = {
-        'email_template_id': fields.many2one('email.template', 'Template'),
-        'is_template_template': fields.function(
+
+    email_template_id = fields.Many2one('email.template', 'Template')
+        'is_template_template': fields.Function(
             _get_is_template_template, type='boolean',
             string='Is a template template'),
-        }
+    
 
     def get_email_template(self, cr, uid, template_id=False, record_id=None,
                            context=None):

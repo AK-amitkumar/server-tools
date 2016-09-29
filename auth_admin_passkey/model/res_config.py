@@ -20,8 +20,8 @@
 #
 ##############################################################################
 
-from openerp.osv import fields
-from openerp.osv.orm import TransientModel
+from openerp import fields
+from openerp.models.orm import TransientModel
 from openerp.tools.safe_eval import safe_eval
 
 
@@ -60,17 +60,17 @@ class base_config_settings(TransientModel):
             repr(config.auth_admin_passkey_send_to_user))
 
     # Columns Section
-    _columns = {
-        'auth_admin_passkey_send_to_admin': fields.boolean(
+
+        'auth_admin_passkey_send_to_admin': fields.Boolean(
             'Send email to admin user.',
             help="""When the administrator use his password to login in """
             """with a different account, OpenERP will send an email """
             """to the admin user.""",
         ),
-        'auth_admin_passkey_send_to_user': fields.boolean(
+        'auth_admin_passkey_send_to_user': fields.Boolean(
             string='Send email to user.',
             help="""When the administrator use his password to login in """
             """with a different account, OpenERP will send an email """
             """to the account user.""",
         ),
-    }
+
