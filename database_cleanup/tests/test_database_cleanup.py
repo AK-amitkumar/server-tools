@@ -42,7 +42,7 @@ class TestDatabaseCleanup(TransactionCase):
             'insert into ir_attachment (name, res_model, res_id, type) values '
             "('test attachment', 'database.cleanup.test.model', 42, 'binary')")
         self.registry.models.pop('x_database.cleanup.test.model')
-        self.registry._pure_function_fields.pop(
+        self.registry._pure_function_fields.Pop(
             'x_database.cleanup.test.model')
         purge_models = self.env['cleanup.purge.wizard.model'].create({})
         purge_models.purge_all()

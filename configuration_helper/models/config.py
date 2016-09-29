@@ -42,7 +42,7 @@ class AbstractConfigSettings(models.AbstractModel):
             if isinstance(field, fields.Field):
                 # allows to exclude some field
                 if self._filter_field(field_key):
-                    # fields.agrs contains fields attributes
+                    # fields.Agrs contains fields attributes
                     kwargs = field.args.copy()
                     kwargs['related'] = 'company_id.' + field_key
                     field_key = re.sub('^' + self._prefix, '', field_key)

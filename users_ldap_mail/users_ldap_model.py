@@ -19,23 +19,22 @@
 #
 ##############################################################################
 
-from openerp.osv import fields, orm
+from openerp import fields, models
 
 import logging
 _log = logging.getLogger(__name__)
 
 
-class CompanyLDAP(orm.Model):
+class CompanyLDAP(models.Model):
     _inherit = 'res.company.ldap'
-    _columns = {
-        'name_attribute': fields.char(
+
+    name_attribute = fields.Char(
             'Name Attribute', size=64,
             help="By default 'cn' is used. "
-                 "For ActiveDirectory you might use 'displayName' instead."),
-        'mail_attribute': fields.char(
+                 "For ActiveDirectory you might use 'displayName' instead.")
+    mail_attribute = fields.Char(
             'E-mail attribute', size=64,
-            help="LDAP attribute to use to retrieve em-mail address."),
-    }
+            help="LDAP attribute to use to retrieve em-mail address.")
 
     _defaults = {
         'name_attribute': 'cn',

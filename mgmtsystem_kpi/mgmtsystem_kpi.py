@@ -20,7 +20,7 @@
 ##############################################################################
 
 from datetime import datetime, timedelta
-from openerp.osv import fields, orm
+from openerp import fields
 from openerp.tools.translate import _
 from openerp.tools.safe_eval import safe_eval
 from openerp.tools import (
@@ -66,10 +66,10 @@ class mgmtsystem_kpi_category(orm.Model):
     """
     _name = "mgmtsystem.kpi.category"
     _description = "KPI Category"
-    _columns = {
-        'name': fields.char('Name', size=50, required=True),
-        'description': fields.text('Description')
-    }
+
+    name = fields.Char('Name', size=50, required=True)
+        'description': fields.Text('Description')
+
 
 
 class mgmtsystem_kpi_threshold_range(orm.Model):
@@ -153,69 +153,69 @@ class mgmtsystem_kpi_threshold_range(orm.Model):
                                   "value! Please adjust them.")
         return result
 
-    _columns = {
-        'name': fields.char('Name', size=50, required=True),
-        'valid': fields.function(
+
+    name = fields.Char('Name', size=50, required=True)
+        'valid': fields.Function(
             _is_valid_range,
             string='Valid',
             type='boolean',
             required=True,
         ),
-        'invalid_message': fields.function(
+        'invalid_message': fields.Function(
             _generate_invalid_message,
             string='Message',
             type='char',
             size=100,
         ),
-        'min_type': fields.selection((
+        'min_type': fields.Selection((
             ('static', 'Fixed value'),
             ('python', 'Python Code'),
             ('local', 'SQL - Local DB'),
             ('external', 'SQL - Externa DB'),
         ), 'Min Type', required=True),
-        'min_value': fields.function(
+        'min_value': fields.Function(
             compute_min_value,
             string='Minimum',
             type='float',
         ),
-        'min_fixed_value': fields.float('Minimum'),
-        'min_code': fields.text('Minimum Computation Code'),
-        'min_dbsource_id': fields.many2one(
+    min_fixed_value = fields.Float('Minimum')
+    min_code = fields.Text('Minimum Computation Code')
+        'min_dbsource_id': fields.Many2one(
             'base.external.dbsource',
             'External DB Source',
         ),
-        'max_type': fields.selection((
+        'max_type': fields.Selection((
             ('static', 'Fixed value'),
             ('python', 'Python Code'),
             ('local', 'SQL - Local DB'),
             ('external', 'SQL - External DB'),
         ), 'Max Type', required=True),
-        'max_value': fields.function(
+        'max_value': fields.Function(
             compute_max_value,
             string='Maximum',
             type='float',
         ),
-        'max_fixed_value': fields.float('Maximum'),
-        'max_code': fields.text('Maximum Computation Code'),
-        'max_dbsource_id': fields.many2one(
+    max_fixed_value = fields.Float('Maximum')
+    max_code = fields.Text('Maximum Computation Code')
+        'max_dbsource_id': fields.Many2one(
             'base.external.dbsource',
             'External DB Source',
         ),
-        'color': fields.char(
+        'color': fields.Char(
             'Color',
             help='RGB code with #',
             size=7,
             required=True,
         ),
-        'threshold_ids': fields.many2many(
+        'threshold_ids': fields.Many2many(
             'mgmtsystem.kpi.threshold',
             'mgmtsystem_kpi_threshold_range_rel',
             'range_id',
             'threshold_id',
             'Thresholds',
         ),
-        'company_id': fields.many2one('res.company', 'Company')
-    }
+        'company_id': fields.Many2one('res.company', 'Company')
+
 
     _defaults = {
         'company_id': (
@@ -259,30 +259,30 @@ class mgmtsystem_kpi_threshold(orm.Model):
                                   "make sure your ranges do not overlap.")
         return result
 
-    _columns = {
-        'name': fields.char('Name', size=50, required=True),
-        'range_ids': fields.many2many(
+
+    name = fields.Char('Name', size=50, required=True)
+        'range_ids': fields.Many2many(
             'mgmtsystem.kpi.threshold.range',
             'mgmtsystem_kpi_threshold_range_rel',
             'threshold_id',
             'range_id',
             'Ranges'
         ),
-        'valid': fields.function(
+        'valid': fields.Function(
             _is_valid_threshold,
             string='Valid',
             type='boolean',
             required=True,
         ),
-        'invalid_message': fields.function(
+        'invalid_message': fields.Function(
             _generate_invalid_message,
             string='Message',
             type='char',
             size=100,
         ),
-        'kpi_ids': fields.one2many('mgmtsystem.kpi', 'threshold_id', 'KPIs'),
-        'company_id': fields.many2one('res.company', 'Company')
-    }
+    kpi_ids = fields.One2many('mgmtsystem.kpi', 'threshold_id', 'KPIs')
+        'company_id': fields.Many2one('res.company', 'Company')
+
 
     _defaults = {
         'company_id': (
@@ -336,18 +336,18 @@ class mgmtsystem_kpi_history(orm.Model):
     _name = "mgmtsystem.kpi.history"
     _description = "History of the KPI"
 
-    _columns = {
-        'name': fields.char('Name', size=150, required=True),
-        'kpi_id': fields.many2one('mgmtsystem.kpi', 'KPI', required=True),
-        'date': fields.datetime(
+
+    name = fields.Char('Name', size=150, required=True)
+    kpi_id = fields.Many2one('mgmtsystem.kpi', 'KPI', required=True)
+        'date': fields.Datetime(
             'Execution Date',
             required=True,
             readonly=True,
         ),
-        'value': fields.float('Value', required=True, readonly=True),
-        'color': fields.text('Color', required=True, readonly=True),
-        'company_id': fields.many2one('res.company', 'Company')
-    }
+    value = fields.Float('Value', required=True, readonly=True)
+    color = fields.Text('Color', required=True, readonly=True)
+        'company_id': fields.Many2one('res.company', 'Company')
+
 
     _defaults = {
         'company_id': (
@@ -466,61 +466,61 @@ class mgmtsystem_kpi(orm.Model):
 
         return res
 
-    _columns = {
-        'name': fields.char('Name', size=50, required=True),
-        'description': fields.text('Description'),
-        'category_id': fields.many2one(
+
+    name = fields.Char('Name', size=50, required=True)
+    description = fields.Text('Description')
+        'category_id': fields.Many2one(
             'mgmtsystem.kpi.category',
             'Category',
             required=True,
         ),
-        'threshold_id': fields.many2one(
+        'threshold_id': fields.Many2one(
             'mgmtsystem.kpi.threshold',
             'Threshold',
             required=True,
         ),
-        'periodicity': fields.integer('Periodicity'),
-        'periodicity_uom': fields.selection((
+    periodicity = fields.Integer('Periodicity')
+        'periodicity_uom': fields.Selection((
             ('hour', 'Hour'),
             ('day', 'Day'),
             ('week', 'Week'),
             ('month', 'Month')
         ), 'Periodicity UoM', required=True),
-        'next_execution_date': fields.datetime(
+        'next_execution_date': fields.Datetime(
             'Next execution date',
             readonly=True,
         ),
-        'value': fields.function(
+        'value': fields.Function(
             _display_last_kpi_value,
             string='Value',
             type='float',
         ),
-        'kpi_type': fields.selection((
+        'kpi_type': fields.Selection((
             ('python', 'Python'),
             ('local', 'SQL - Local DB'),
             ('external', 'SQL - External DB')
         ), 'KPI Computation Type'),
-        'dbsource_id': fields.many2one(
+        'dbsource_id': fields.Many2one(
             'base.external.dbsource',
             'External DB Source',
         ),
-        'kpi_code': fields.text(
+        'kpi_code': fields.Text(
             'KPI Code',
             help=("SQL code must return the result as 'value' "
                   "(i.e. 'SELECT 5 AS value')."),
         ),
-        'history_ids': fields.one2many(
+        'history_ids': fields.One2many(
             'mgmtsystem.kpi.history',
             'kpi_id',
             'History',
         ),
-        'active': fields.boolean(
+        'active': fields.Boolean(
             'Active',
             help=("Only active KPIs will be updated by the scheduler based on"
                   " the periodicity configuration."),
         ),
-        'company_id': fields.many2one('res.company', 'Company')
-    }
+        'company_id': fields.Many2one('res.company', 'Company')
+
 
     _defaults = {
         'company_id': (

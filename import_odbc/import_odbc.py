@@ -21,7 +21,7 @@
 
 import sys
 from datetime import datetime
-from openerp.osv import orm, fields
+from openerp import fields
 import logging
 _logger = logging.getLogger(__name__)
 _loglvl = _logger.getEffectiveLevel()
@@ -32,42 +32,42 @@ class import_odbc_dbtable(orm.Model):
     _name = "import.odbc.dbtable"
     _description = 'Import Table Data'
     _order = 'exec_order'
-    _columns = {
-        'name': fields.char('Datasource name', required=True, size=64),
-        'enabled': fields.boolean('Execution enabled'),
-        'dbsource_id': fields.many2one('base.external.dbsource',
+
+        'name': fields.Char('Datasource name', required=True, size=64),
+        'enabled': fields.Boolean('Execution enabled'),
+        'dbsource_id': fields.Many2one('base.external.dbsource',
                                        'Database source', required=True),
-        'sql_source': fields.text('SQL', required=True,
+        'sql_source': fields.Text('SQL', required=True,
                                   help='Column names must be valid \
                                   "import_data" columns.'),
-        'model_target': fields.many2one('ir.model', 'Target object'),
-        'noupdate': fields.boolean('No updates',
+        'model_target': fields.Many2one('ir.model', 'Target object'),
+        'noupdate': fields.Boolean('No updates',
                                    help="Only create new records;\
                                    disable updates to existing records."),
-        'exec_order': fields.integer('Execution order',
+        'exec_order': fields.Integer('Execution order',
                                      help="Defines the order to perform \
                                      the import"),
-        'last_sync': fields.datetime('Last sync date',
+        'last_sync': fields.Datetime('Last sync date',
                                      help="Datetime for the last succesfull \
                                      sync. \nLater changes on the source may \
                                      not be replicated on the destination"),
-        'start_run': fields.datetime('Time started', readonly=True),
-        'last_run': fields.datetime('Time ended', readonly=True),
-        'last_record_count': fields.integer('Last record count',
+        'start_run': fields.Datetime('Time started', readonly=True),
+        'last_run': fields.Datetime('Time ended', readonly=True),
+        'last_record_count': fields.Integer('Last record count',
                                             readonly=True),
-        'last_error_count': fields.integer('Last error count', readonly=True),
-        'last_warn_count': fields.integer('Last warning count', readonly=True),
-        'last_log': fields.text('Last run log', readonly=True),
-        'ignore_rel_errors': fields.boolean('Ignore relationship errors',
+        'last_error_count': fields.Integer('Last error count', readonly=True),
+        'last_warn_count': fields.Integer('Last warning count', readonly=True),
+        'last_log': fields.Text('Last run log', readonly=True),
+        'ignore_rel_errors': fields.Boolean('Ignore relationship errors',
                                             help="On error try to reimport \
                                             rows ignoring relationships."),
-        'raise_import_errors': fields.boolean('Raise import errors',
+        'raise_import_errors': fields.Boolean('Raise import errors',
                                               help="Import errors not \
                                               handled, intended for \
                                               debugging purposes. \nAlso \
                                               forces debug messages to be \
                                               written to the server log."),
-    }
+
     _defaults = {
         'enabled': True,
         'exec_order': 10,
